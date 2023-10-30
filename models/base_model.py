@@ -53,18 +53,39 @@ class BaseModel:
         the class name of the object.
         """
         my_dict = self.__dict__.copy()
+
+        # Convert created_at and updated_at to string in a specific format
+        if "created_at" in new_dict:
+            new_dict["created_at"] = new_dict["created_at"].strftime(time)
+        if "updated_at" in new_dict:
+            new_dict["updated_at"] = new_dict["updated_at"].strftime(time)
+
+        # Add the class name to the dictionary
+        new_dict["__class__"] = self.__class__.__name__
+        if "_sa_instance_state" in new_dict:
+            # Remove SQLAlchemy state information
+            del new_dict["_sa_instance_state"]
+
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
         my_dict.pop("_sa_instance_state", None)
         return my_dict
 
-    def delete(self):
-        """Delete the current instance from storage."""
-        models.storage.delete(self)
 
     def __str__(self):
         """Return the print/str representation of the BaseModel instance."""
         d = self.__dict__.copy()
         d.pop("_sa_instance_state", None)
         return "[{}] ({}) {}".format(type(self).__name__, self.id, d)
+        # task 14
+        # Hash the password to MD5 value if it exists
+        if save_fs is None:
+            if "password" in new_dict:
+                del new_dict["password"]
+
+        return new_dict
+
+    def delete(self):
+        """Delete the current instance from storage."""
+        models.storage.delete(self)
