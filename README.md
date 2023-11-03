@@ -1,3 +1,3 @@
-0x03. AirBnB clone - Deploy static
+0x06. AirBnB clone - Web dynamic
 
 Khwezi Ndlovu
